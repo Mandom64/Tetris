@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "process",
+            "label": "Build Tetris",
+            "command": "C:\\MinGW\\bin\\gcc.exe",
+            "args": [
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "src\\*.c",
+                "-o",
+                "build\\tetris.exe",
+                "-lncurses",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        // {
+        //     "label": "Run Tetris",
+        //     "type": "shell",
+        //     "command": "${workspaceFolder}\\build\\tetris.exe",
+        //     "windows": {
+        //         "command": "cmd.exe",
+        //         "args": ["/c", "${workspaceFolder}\\build\\tetris.exe"]
+        //     },
+        //     "group": {
+        //         "kind": "test",
+        //         "isDefault": true
+        //     },
+        //     "problemMatcher": []
+        // }
+    ]
+}
