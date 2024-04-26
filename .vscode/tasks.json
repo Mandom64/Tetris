@@ -12,7 +12,7 @@
                 "src\\*.c",
                 "-o",
                 "build\\tetris.exe",
-                "-lncurses",
+                "-lncurses"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -21,20 +21,6 @@
                 "$gcc"
             ],
             "group": "build"
-        },
-        // {
-        //     "label": "Run Tetris",
-        //     "type": "shell",
-        //     "command": "${workspaceFolder}\\build\\tetris.exe",
-        //     "windows": {
-        //         "command": "cmd.exe",
-        //         "args": ["/c", "${workspaceFolder}\\build\\tetris.exe"]
-        //     },
-        //     "group": {
-        //         "kind": "test",
-        //         "isDefault": true
-        //     },
-        //     "problemMatcher": []
-        // }
+        }
     ]
 }

@@ -5,6 +5,9 @@
 	"C_Cpp.default.cStandard": "c99",
 	"files.associations": {
 		"stdio.h": "c",
-		"common.h": "c"
+		"common.h": "c",
+		"board.h": "c",
+		"tetromino.h": "c",
+		"stdbool.h": "c"
 	}
 }

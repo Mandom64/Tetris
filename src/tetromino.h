@@ -1,107 +1,167 @@
-#ifndef TETROMINO_H
-#define TETROMINO_H
+#ifndef _TETROMINO_H
+#define _TETROMINO_H
 
 #include <stdlib.h>
 #include "board.h"
 #include "common.h"
 
-#define TMINOS 5
 #define BLOCKS 4
 
 typedef struct {
-    Vec2 block[BLOCKS];
-} Tetromino;
-Tetromino *orig = NULL;
-Tetromino *curr_piece = NULL;
+    Point block[BLOCKS];
+} Tmino;
+Tmino *orig_pieces;
+Tmino *curr_piece;
 
-void init_tminos() {
-    curr_piece = malloc(sizeof(Tetromino));
-    orig = malloc(TMINOS * sizeof(Tetromino));
-    // oooo
-    orig[0].block[0] = (Vec2){(WIDTH / 2 - 2) + 1, 1}; 
-    orig[0].block[1] = (Vec2){(WIDTH / 2 - 2) + 1, 2};
-    orig[0].block[2] = (Vec2){(WIDTH / 2 - 2) + 1, 3};
-    orig[0].block[3] = (Vec2){(WIDTH / 2 - 2) + 1, 4};
-    // oo
-    //  oo
-    orig[1].block[0] = (Vec2){(WIDTH / 2 - 2) + 1, 1};
-    orig[1].block[1] = (Vec2){(WIDTH / 2 - 2) + 1, 2};
-    orig[1].block[2] = (Vec2){(WIDTH / 2 - 2) + 2, 2};
-    orig[1].block[3] = (Vec2){(WIDTH / 2 - 2) + 2, 3};
-    // oo
-    // oo
-    orig[2].block[0] = (Vec2){(WIDTH / 2 - 2) + 1, 1};
-    orig[2].block[1] = (Vec2){(WIDTH / 2 - 2) + 2, 1};
-    orig[2].block[2] = (Vec2){(WIDTH / 2 - 2) + 1, 2};
-    orig[2].block[3] = (Vec2){(WIDTH / 2 - 2) + 2, 2};
-    // ooo
-    //   o
-    orig[3].block[0] = (Vec2){(WIDTH / 2 - 2) + 1, 1};
-    orig[3].block[1] = (Vec2){(WIDTH / 2 - 2) + 1, 2};
-    orig[3].block[2] = (Vec2){(WIDTH / 2 - 2) + 1, 3};
-    orig[3].block[3] = (Vec2){(WIDTH / 2 - 2) + 2, 3};
-    // ooo
-    //  o 
-    orig[4].block[0] = (Vec2){(WIDTH / 2 - 2) + 1, 1};
-    orig[4].block[1] = (Vec2){(WIDTH / 2 - 2) + 1, 2};
-    orig[4].block[2] = (Vec2){(WIDTH / 2 - 2) + 1, 3};
-    orig[4].block[3] = (Vec2){(WIDTH / 2 - 2) + 2, 2};
+Tmino *create_tminos(int size) {
+    Tmino *tminos = malloc(size * sizeof(Tmino));
+    return tminos;
 }
 
-void draw_piece(Tetromino *tmino) {
-    for(int j = 0; j < BLOCKS; j++) {
-        board[tmino->block[j].x][tmino->block[j].y] = 1;
-    }
-}
-
-bool collision(Tetromino *tmino) {
-    for(int k = 0; k < BLOCKS; k++) {
-        if(tmino->block[k].y == HEIGHT-2) {
-            return true;
-        }
-        if(board[tmino->block[k].x][tmino->block[k].y+1] == 2) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void copy_tmino(Tetromino *t1, Tetromino *t2) {
+void copy_tmino(Tmino *t1, Tmino *t2) {
     for(int i = 0; i < BLOCKS; i++) {
         t1->block[i] = t2->block[i];
     }
 }
 
-void move_tmino(Tetromino *tmino, int deltaX, int deltaY) {
-    // Border check
-    for(int i = 0; i < BLOCKS; i++) {
-        if((tmino->block[i].x+deltaX) == 0 || 
-           (tmino->block[i].y+deltaY) == 0 || 
-           (tmino->block[i].x+deltaX) == WIDTH-1 || 
-           (tmino->block[i].y+deltaY) == HEIGHT-1) {
-                return;
-           }
-    }
+void init_tminos() {
+    orig_pieces = create_tminos(5);
+    // oooo
+    orig_pieces[0].block[0] = (Point){(width / 2 - 2) + 1, 1}; 
+    orig_pieces[0].block[1] = (Point){(width / 2 - 2) + 1, 2};
+    orig_pieces[0].block[2] = (Point){(width / 2 - 2) + 1, 3};
+    orig_pieces[0].block[3] = (Point){(width / 2 - 2) + 1, 4};
+    // oo
+    //  oo
+    orig_pieces[1].block[0] = (Point){(width / 2 - 2) + 1, 1};
+    orig_pieces[1].block[1] = (Point){(width / 2 - 2) + 1, 2};
+    orig_pieces[1].block[2] = (Point){(width / 2 - 2) + 2, 2};
+    orig_pieces[1].block[3] = (Point){(width / 2 - 2) + 2, 3};
+    // oo
+    // oo
+    orig_pieces[2].block[0] = (Point){(width / 2 - 2) + 1, 1};
+    orig_pieces[2].block[1] = (Point){(width / 2 - 2) + 2, 1};
+    orig_pieces[2].block[2] = (Point){(width / 2 - 2) + 1, 2};
+    orig_pieces[2].block[3] = (Point){(width / 2 - 2) + 2, 2};
+    // ooo
+    //   o
+    orig_pieces[3].block[0] = (Point){(width / 2 - 2) + 1, 1};
+    orig_pieces[3].block[1] = (Point){(width / 2 - 2) + 1, 2};
+    orig_pieces[3].block[2] = (Point){(width / 2 - 2) + 1, 3};
+    orig_pieces[3].block[3] = (Point){(width / 2 - 2) + 2, 3};
+    // ooo
+    //  o 
+    orig_pieces[4].block[0] = (Point){(width / 2 - 2) + 1, 1};
+    orig_pieces[4].block[1] = (Point){(width / 2 - 2) + 1, 2};
+    orig_pieces[4].block[2] = (Point){(width / 2 - 2) + 1, 3};
+    orig_pieces[4].block[3] = (Point){(width / 2 - 2) + 2, 2};
 
-    for(int i = BLOCKS; i >= 0; i--) {
-        tmino->block[i].x += deltaX;
-        tmino->block[i].y += deltaY;
-    }
+    curr_piece = create_tminos(1);
+    copy_tmino(curr_piece, &orig_pieces[0]);
 }
 
-void rest_tmino(Tetromino *t) {
-    for(int i = 0; i < BLOCKS; i++) {
-        board[t->block[i].x][t->block[i].y] = 2;
+void draw_curr_piece(Tmino *t) {
+    for(int j = 0; j < BLOCKS; j++) {
+        int x = t->block[j].x;
+        int y = t->block[j].y; 
+
+        board[x][y] = 1;
     }
-}
-
-void rotate_tmino(Tetromino *t) {
-
 }
 
 int rand_tmino() {
     return n_rand(0, 3);
 }
 
-#endif // TETROMINO_H GUARD
+bool piece_collision(Tmino *t) {
+    for(int i = 0; i < BLOCKS; i++) {
+        int x = t->block[i].x;
+        int y = t->block[i].y;
+
+        if(board[x][y] == 2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool bottom_collision(Tmino *t) {
+    for(int i = 0; i < BLOCKS; i++) {
+        if(t->block[i].y == height-2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool can_fit(Tmino *t, int deltaX, int deltaY) {
+    Tmino *next_move = malloc(sizeof(Tmino));
+    copy_tmino(next_move, t);
+
+    for(int i = BLOCKS-1; i >= 0; i--) {
+        next_move->block[i].x += deltaX;
+        next_move->block[i].y += deltaY;
+    }
+    
+    for(int i = 0; i < BLOCKS; i++) {
+        int x = next_move->block[i].x;
+        int y = next_move->block[i].y;
+
+        if(board[x][y] != 0) {
+            return false;
+        }
+    }
+    free(next_move);
+    return true;
+}
+
+void lock_tmino(Tmino *t) {
+    for(int i = 0; i < BLOCKS; i++) {
+        int x = t->block[i].x;
+        int y = t->block[i].y;
+
+        board[x][y] = 2;
+    }
+}
+
+void spawn_tmino() {
+    lock_tmino(curr_piece);
+    copy_tmino(curr_piece, &orig_pieces[rand_tmino()]);
+}
+
+void move_tmino(Tmino *curr_piece, int deltaX, int deltaY) {
+    // Border check
+    for(int i = 0; i < BLOCKS; i++) {
+        int x = curr_piece->block[i].x + deltaX;
+        int y = curr_piece->block[i].y + deltaY;
+
+        if (x < 0 || x >= width-1 || y < 0 || y >= height-1) {
+            return;
+        }
+    }
+
+    // Does piece fits? if yes move else spawn new one
+    if((!can_fit(curr_piece, 0, 1)) || bottom_collision(curr_piece)) {
+        spawn_tmino(curr_piece);
+    } else if(can_fit(curr_piece, deltaX, deltaY)) {
+        for(int i = BLOCKS-1; i >= 0; i--) {
+            curr_piece->block[i].x += deltaX;
+            curr_piece->block[i].y += deltaY;
+        }
+    } 
+}
+
+// Rotation found from here "https://www.youtube.com/watch?v=zH_omFPqMO4&t=186s"
+void rotate_tmino(Tmino *t) {
+    // TODO: implement this
+    Point p = t->block[1];
+    for(int i = 0; i < BLOCKS; i++) {
+        int x = t->block[i].y - p.y;
+        int y = t->block[i].x - p.x;
+        t->block[i].x = p.x - x;
+        t->block[i].y = p.y + y;
+    }
+}
+
+
+#endif /* tetromino.h guard */
