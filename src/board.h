@@ -1,18 +1,16 @@
 #ifndef _BOARD_H
 #define _BOARD_H
 
-#include <stdio.h>
-#include <ncurses/ncurses.h>
-#define DEBUG  1
+#define DEBUG_BOARD  1
 
 #define width  12
 #define height 22
 int board[width][height];
 
 void init_board() {
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
-            if(i == 0 || i == height-1 || j == 0 || j == width-1) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i == 0 || i == height-1 || j == 0 || j == width-1) {
                 board[j][i] = 7;
             } else {
                 board[j][i] = 0;
@@ -22,9 +20,9 @@ void init_board() {
 }
 
 void clear_board() {
-    for(int i = 1; i <  height-1; i++) {
-        for(int j = 1; j < width-1; j++) {
-            if(board[j][i] == 1) {
+    for (int i = 1; i <  height-1; i++) {
+        for (int j = 1; j < width-1; j++) {
+            if (board[j][i] == 1) {
                 board[j][i] = 0;
             }
         }
@@ -32,23 +30,31 @@ void clear_board() {
 }
 
 void draw_board() {
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
-            if(board[j][i] == 1) {
-                printw("O");
-            } else if(board[j][i] == 2) {
-                printw("O");
-            } else if(board[j][i] == 7) {
-                printw("#");
-            } else if(board[j][i] == 8) {
-                printw("=");
-            } else {
-                printw(" ");
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            switch (board[j][i])
+            {
+                case 1:
+                    printw("O");
+                    break;
+                case 2:
+                    printw("0");
+                    break;
+                case 7:
+                    printw("#");
+                    break;
+                case 8:
+                    printw("=");
+                    break;
+                default:
+                    printw(" ");
+                    break;
             }
         }
-        if(DEBUG) {
+
+        if (DEBUG_BOARD) {
             printw("  ");
-            for(int j = 0; j < width; j++) {
+            for (int j = 0; j < width; j++) {
                 printw("%d", board[j][i]);
             }
         }
@@ -58,14 +64,15 @@ void draw_board() {
 }
 
 int check_lines() {
-    for(int i = 1; i <  height-1; i++) {
-        int line = 0;
-        for(int j = 1; j < width-1; j++) {
-            if(board[j][i] == 2) {
+    int line = 0;
+    for (int i = 1; i <  height-1; i++) {
+        line = 0;
+        for (int j = 1; j < width-1; j++) {
+            if (board[j][i] == 2) {
                 line++;
             }
         }
-        if(line == width-2) {
+        if (line == width-2) {
             return i;
         }
     }
@@ -73,12 +80,13 @@ int check_lines() {
 }
 
 void delete_line(int line) {
-    for(int i = line; i > 1; i--) {
-        for(int j = 1; j < width-1; j++) {
-            if(board[j][i] != 7)
+    for (int i = line; i > 1; i--) {
+        for (int j = 1; j < width-1; j++) {
+            if (board[j][i] != 7) {
                 board[j][i] = board[j][i-1];
+            }
         }
     }
 }
 
-#endif /* board.h guard */
+#endif  /* board.h guard */
