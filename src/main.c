@@ -32,8 +32,8 @@ void handle_input(Tmino *curr_piece) {
     }
 }
 
-void game_tick(Tmino *curr_piece) {
-    move_tmino(curr_piece, 0, 1);
+void game_tick() {
+    move_tmino(&curr_piece, 0, 1);
     Sleep(TICK_RATE);
 }
 
@@ -64,8 +64,8 @@ int main() {
             draw_board();
             /* Text goes under the board */
             printw("Ticks:%d\n", ticks++);
-            handle_input(curr_piece);
-            game_tick(curr_piece);
+            handle_input(&curr_piece);
+            game_tick();
 
             /* Check for full lines, if there are any delete */
             while((line = check_lines()) != -1) {
@@ -85,7 +85,6 @@ int main() {
 
     /* Cleanup */
     endwin();
-    delete_tminos();
 
     return 0;
 }
