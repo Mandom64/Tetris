@@ -1,14 +1,25 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <windows.h>
 #include <time.h>
-#include <ncurses/ncurses.h>
+#include <ncurses.h>
 #include "common.h"
 #include "board.h"
 #include "tetromino.h"
 
-#define TICK_RATE 100
+#ifdef _WIN32
+    #include <windows.h>
+    #define sleep() Sleep()
+    #define MS 0
+#else
+    #include <unistd.h>
+    #define sleep() usleep()
+    #define MS 1000
+#endif
+
+#define TICKS 150
+#define TICK_RATE TICKS * MS
 bool quit = false;
 
 void handle_input(Tmino *curr_piece) {
@@ -34,7 +45,7 @@ void handle_input(Tmino *curr_piece) {
 
 void game_tick() {
     move_tmino(&curr_piece, 0, 1);
-    Sleep(TICK_RATE);
+    usleep(TICK_RATE);
 }
 
 int main() {
@@ -76,7 +87,7 @@ int main() {
                 /* This is a small animation for deleting the line */
                 draw_board();
                 refresh();
-                Sleep(500);
+                usleep(500);
                 delete_line(line);
             }
 
