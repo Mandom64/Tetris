@@ -4,8 +4,9 @@ Written in C99 using ncurses.h
 
 ## Controls
 
-- **Up Arrow:** Rotate current tetromino
 - **Left/Right Arrow:** Move tetromino
+- **Up Arrow** Rotate current tetromino
+- **Down Arrow** Increase fall speed
 
 # Build and run(on linux)
 ```
@@ -13,7 +14,11 @@ Written in C99 using ncurses.h
 ./build.sh run
 ```
 
-# Or compile manually 
+# Manual Compilation 
 ```
 gcc -Wall -Wextra src/main.c -o build/tetris -lncurses
 ```
+
+# TODO
+- *Improve game feel*
+- *Implement game state and score*
